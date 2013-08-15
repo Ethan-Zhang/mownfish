@@ -21,9 +21,9 @@
 import os
 
 from tornado.web import RequestHandler
+from tornado.web import HTTPError
 
 from mownfish.util.log import LOG
-
 from mownfish.error import ParameterEmptyError
 from mownfish.error import ParameterTypeError
 
@@ -31,31 +31,20 @@ class BaseHandler(RequestHandler):
 
     HTTP_SERVER_NAME = 'ZWS/1.0'
 
-    def initialize(self):
-        if __debug__:
-            LOG.debug('call initialize()')
-
     def set_default_headers(self):
         self.set_header('Server', BaseHandler.HTTP_SERVER_NAME)
-        pass
 
     def on_connection_close(self):
         LOG.info('connection close.')
-        pass
-
-
-    def finish(self, chunk=None):
-        if not self.request.connection.stream.closed():
-            RequestHandler.finish(self, chunk)
-
-    def api_response(self, data):
-        if not self._finished:
-            self.finish(data)
 
     def _check_argument(self, parameter_name,
             default_value=None, expect_types=()):
-        v = self.get_argument(parameter_name, default_value)
-        if v is None:
+        try:
+            if not default_value:
+                v = self.get_argument(parameter_name)
+            else:
+                v = self.get_argument(parameter_name, default_value)
+        except HTTPError as e:
             raise ParameterEmptyError(parameter_name)
 
         if expect_types and not isinstance(v, expect_types): 

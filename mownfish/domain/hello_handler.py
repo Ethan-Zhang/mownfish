@@ -44,29 +44,22 @@ from mownfish.error import BaseError
 class HelloHandler(BaseHandler):
 
     @tornado.web.asynchronous
-    def post(self):
-        self.get()
-
-    @tornado.web.asynchronous
     def get(self):
         try:
             # 只检查参数,不作业务逻辑处理
-            self.name = self._check_argument('name', expect_types=(str, unicode))
+            name = self._check_argument('name', expect_types=(str, unicode))
 
-            self.api_response({'e_code': ECODE.SUCCESS, 'e_msg': u'Hello!'})
+            self.finish({'code': ECODE.SUCCESS, 'msg': u'Hello! %s' % name})
 
             if __debug__:
                 LOG.debug(self)
 
-        except HTTPError, e:
-            LOG.error(e, exc_info=True)
-            return self.api_response({'e_code':ECODE.HTTP, 'e_msg': '%s' % e})
         except BaseError, e:
             LOG.error(e, exc_info=True)
-            return self.api_response({'e_code':e.e_code, 'e_msg': '%s' % e})
+            self.finish({'code':e.e_code, 'msg': '%s' % e})
         except Exception, e:
             LOG.error(e, exc_info=True)
-            return self.api_response({'e_code':ECODE.DEFAULT, 'e_msg':
+            self.finish({'code':ECODE.DEFAULT, 'msg':
                 'Unknown'})
 
 
