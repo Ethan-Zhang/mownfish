@@ -16,4 +16,3 @@ class TimerTask(object):
     def stop(self):
         self._timer_task.stop()
 
-TIMERTASK = TimerTask()

@@ -87,7 +87,8 @@ class Server(object):
                 tornado.httpserver.HTTPServer(xheaders=True, request_callback=TApplication())
             http_server.add_sockets(sockets)
 
-            timer_task.TIMERTASK.start()
+            tt = timer_task.TimerTask()
+            tt.start()
 
             tornado.ioloop.IOLoop.instance().start()
 
