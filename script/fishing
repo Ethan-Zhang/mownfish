@@ -1,0 +1,54 @@
+#!/usr/bin/env python
+
+import os
+import sys
+import shutil
+import re
+
+from tornado import options
+from tornado.options import define, options
+
+
+define('dst_path', type=str, help='path to install')
+define('project_name', type=str, help='project name')
+
+
+def main():
+    options.parse_command_line()
+    if not options.project_name:
+        options.print_help()
+        sys.exit()
+
+    project_name = options.project_name
+    src_path = os.path.normpath(os.path.join(os.path.abspath(sys.argv[0]),os.pardir,os.pardir))
+    if not options.dst_path:
+        dst_path = os.path.abspath('.')
+
+    os.mkdir(os.path.join(dst_path,project_name))
+    #os.mkdir(os.path.join(dst_path,project_name,'etc'))
+    os.mkdir(os.path.join(dst_path,project_name,'log'))
+
+    #shutil.copy(os.path.join(src_path,'etc','mownfish.conf'),os.path.join(dst_path,project_name,'etc','%s.conf' % project_name))
+    shutil.copytree(os.path.join(src_path,'etc'),
+                os.path.join(dst_path,project_name,'etc'))
+    shutil.copytree(os.path.join(src_path,'mownfish'),
+            os.path.join(dst_path,project_name,project_name))
+
+    for root, dirs, files in os.walk(os.path.join(dst_path, project_name)):
+        for name in files:
+            if name.find('mownfish') != -1:
+                old_name = name
+                name = name.replace('mownfish', project_name)
+                os.rename(os.path.join(root, old_name), 
+                        os.path.join(root, name))
+
+            if re.match(r'.+py$|'+project_name, name):
+                with open(os.path.join(root,name),"r+") as f:
+                    d = f.read()
+                    d = d.replace('mownfish', project_name)
+                    f.truncate(0)
+                    f.seek(0,0)
+                    f.write(d)
+
+if __name__ == '__main__':
+    main()
