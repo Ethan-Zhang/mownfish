@@ -1,12 +1,18 @@
 mownfish
 ==========
 
-mownfish is a web server framework based on tornado.
+mownfish is a productional skeleton for tornado.
+
+Setup
+------------
+```shell
+mownfish/script/fishing --project_name= --dst_path=
+```
 
 Usage
 ------------
 ```shell
-python mownfish/bin/mownfish --port
+python $project_name/bin/$project_name --port
 ```
 
 Requirements
