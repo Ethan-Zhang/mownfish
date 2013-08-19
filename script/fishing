@@ -39,6 +39,8 @@ def main():
     src_path = os.path.normpath(os.path.join(os.path.abspath(sys.argv[0]),os.pardir,os.pardir))
     if not options.dst_path:
         dst_path = os.path.abspath('.')
+    else:
+        dst_path = options.dst_path
 
     os.mkdir(os.path.join(dst_path,project_name))
     #os.mkdir(os.path.join(dst_path,project_name,'etc'))
