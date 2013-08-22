@@ -31,15 +31,22 @@ def main():
     parser.add_option("-d", "--dst_path",
                       dest="dst_path",
                         help="path to install")
+    parser.add_option("-l", "--license_file",
+                    dest="license_file",
+                    help="license header file path")
     options, args = parser.parse_args()
 
-    if options.project_name is None:
+    if not options.project_name:
         parser.error('Must provide --project_name')
-    if options.dst_path is None:
+    if not options.dst_path:
         if args:
             options.dst_path = os.path.abspath(args[0])
         else:
             options.dst_path = os.path.abspath('.')
+    if options.license_file:
+        options.license_file = os.path.abspath(options.license_file)
+        if not os.path.isfile(options.license_file):
+            options.license_file = None
 
     project_name = options.project_name
 
@@ -84,6 +91,10 @@ def main():
                 with open(os.path.join(root,name),"r+") as f:
                     d = f.read()
                     d = d.replace('mownfish', project_name)
+                    if options.license_file:
+                        with open(options.license_file, "r") as fl:
+                            licenses = fl.read()
+                            d = licenses+d[d.find('# under the License.')+20:]
                     f.truncate(0)
                     f.seek(0,0)
                     f.write(d)

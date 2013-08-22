@@ -6,7 +6,7 @@ mownfish is a productional skeleton for tornado.
 Setup
 ------------
 ```shell
-mownfish/script/fishing $dst_path -n $project_name
+mownfish/script/fishing $dst_path -n $project_name -l $lisense_file
 ```
 
 Usage
