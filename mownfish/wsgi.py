@@ -75,8 +75,12 @@ class Server(object):
         LOG.info('START TORNADO WEB SERVER ...')
 
         for key, value in options.iteritems():
+            if key not in ('help', 'log_file_prefix', 'log_to_stderr') \
+                    and value.value() is None:
+                print('must specify %s' % key)
+                options.print_help()
+                sys.exit(0)
             LOG.info('Options: (%s, %s)', key, value.value())
-
 
         try:
             sockets = tornado.netutil.bind_sockets(options.port,
