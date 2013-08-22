@@ -20,33 +20,53 @@ import os
 import sys
 import shutil
 import re
-
-from tornado import options
-from tornado.options import define, options
-
-
-define('dst_path', type=str, help='path to install')
-define('project_name', type=str, help='project name')
-
+import optparse
 
 def main():
-    options.parse_command_line()
-    if not options.project_name:
-        options.print_help()
-        sys.exit()
+
+    parser = optparse.OptionParser()
+    parser.add_option("-n", "--project_name",
+                      dest="project_name",
+                        help="project name")
+    parser.add_option("-d", "--dst_path",
+                      dest="dst_path",
+                        help="path to install")
+    options, args = parser.parse_args()
+
+    if options.project_name is None:
+        parser.error('Must provide --project_name')
+    if options.dst_path is None:
+        if args:
+            options.dst_path = os.path.abspath(args[0])
+        else:
+            options.dst_path = os.path.abspath('.')
 
     project_name = options.project_name
-    src_path = os.path.normpath(os.path.join(os.path.abspath(sys.argv[0]),os.pardir,os.pardir))
-    if not options.dst_path:
-        dst_path = os.path.abspath('.')
+
+    possible_topdir = os.path.normpath(os.path.join(os.path.abspath(sys.argv[0]),
+                                   os.pardir,
+                                    os.pardir))
+    if os.path.exists(os.path.join(possible_topdir, 'mownfish', '__init__.py')):
+        src_path = possible_topdir
     else:
-        dst_path = options.dst_path
+        print('mownfish project Error')
+        sys.exit(0)
+    dst_path = options.dst_path
+    
+    try:
+        os.mkdir(os.path.join(dst_path,project_name))
+        os.mkdir(os.path.join(dst_path,project_name,'log'))
+    except OSError as e:
+        print(e)
+        sys.exit(0)
+    
+    possible_topdir = os.path.normpath(os.path.join(os.path.abspath(sys.argv[0]),
+                                   os.pardir,
+                                    os.pardir))
+    if os.path.exists(os.path.join(possible_topdir, 'mownfish', '__init__.py')):
+        sys.path.insert(0, possible_topdir)
 
-    os.mkdir(os.path.join(dst_path,project_name))
-    #os.mkdir(os.path.join(dst_path,project_name,'etc'))
-    os.mkdir(os.path.join(dst_path,project_name,'log'))
 
-    #shutil.copy(os.path.join(src_path,'etc','mownfish.conf'),os.path.join(dst_path,project_name,'etc','%s.conf' % project_name))
     shutil.copytree(os.path.join(src_path,'etc'),
                 os.path.join(dst_path,project_name,'etc'))
     shutil.copytree(os.path.join(src_path,'mownfish'),
