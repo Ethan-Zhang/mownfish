@@ -5,7 +5,6 @@
 tags
 tmp/
 log/
-*.conf
 build/
 dist/
 *.egg-info
