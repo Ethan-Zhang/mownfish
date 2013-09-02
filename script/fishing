@@ -67,19 +67,15 @@ def main():
         print(e)
         sys.exit(0)
     
-    possible_topdir = os.path.normpath(os.path.join(os.path.abspath(sys.argv[0]),
-                                   os.pardir,
-                                    os.pardir))
-    if os.path.exists(os.path.join(possible_topdir, 'mownfish', '__init__.py')):
-        sys.path.insert(0, possible_topdir)
-
 
     shutil.copytree(os.path.join(src_path,'etc'),
                 os.path.join(dst_path,project_name,'etc'))
     shutil.copytree(os.path.join(src_path,'mownfish'),
             os.path.join(dst_path,project_name,project_name))
+    shutil.copy(os.path.join(src_path, 'setup.py'),
+            os.path.join(dst_path, project_name))
 
-    for root, dirs, files in os.walk(os.path.join(dst_path, project_name)):
+    for root, dirs, files in os.walk(dst_path):
         for name in files:
             if name.find('mownfish') != -1:
                 old_name = name
