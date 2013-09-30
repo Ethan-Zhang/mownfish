@@ -16,4 +16,4 @@
 # under the License.
 
 
-from hello_handler import HelloHandler
+from statinfo_handler import StatInfoHandler

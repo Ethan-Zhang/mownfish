@@ -15,17 +15,6 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
-'''
-localtion
-----------
-* /hello
-
-feature
-----------
-* Process-level global variable
-* Asynchronous Http Request 
-* Decorator Demo
-'''
 
 import os
 import time
@@ -38,21 +27,26 @@ from mownfish.util.log import LOG
 
 from base_handler import BaseHandler 
 from mownfish.error import ErrorCode as ECODE
+from mownfish.error import ErrorMessage as EMSG
 from mownfish.error import BaseError
 
 
-class HelloHandler(BaseHandler):
+class StatInfoHandler(BaseHandler):
 
-    @tornado.web.asynchronous
     def get(self):
         try:
-            # 只检查参数,不作业务逻辑处理
-            name = self._check_argument('name', expect_types=(str, unicode))
-
-            self.finish({'code': ECODE.SUCCESS, 'msg': u'Hello! %s' % name})
-
-            if __debug__:
-                LOG.debug(self)
+            result = {'code': ECODE.SUCCESS, 'msg': EMSG.SUCCESS}
+            stat_info = self.application.stat_info()
+            result['stat_info']={}
+            result['stat_info']['handlers_n']=stat_info['handlers']
+            uptime = stat_info['uptime']
+            up_day = uptime // 86400
+            up_hour = (uptime - up_day*86400) // 3600
+            up_minute = (uptime - up_day*86400 - up_hour*3600) // 60
+            up_second = uptime - up_day*86400 - up_hour*3600 - up_minute*60
+            result['stat_info']['uptime']="%ddays, %dhours, %dminute, %.3fseconds" %\
+                                        (up_day, up_hour, up_minute, up_second)
+            self.finish(result)
 
         except BaseError, e:
             LOG.error(e, exc_info=True)

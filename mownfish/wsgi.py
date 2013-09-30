@@ -44,10 +44,18 @@ class TApplication(tornado.web.Application):
                 }
 
         handlers = [
-            (r'/sayhi', mownfish.domain.HelloHandler),
+            (r'/statinfo', mownfish.domain.StatInfoHandler),
         ]
-        
+
+        self._start_time = time.time()
+
         tornado.web.Application.__init__(self, handlers, **app_settings)
+
+    def stat_info(self):
+        handlers = len(tornado.ioloop.IOLoop.instance()._handlers)
+        return {'handlers': handlers, 
+                'uptime': (time.time() - self._start_time)}
+        
 
 class Server(object):
 
