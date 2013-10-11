@@ -7,7 +7,7 @@ setup(
     packages=find_packages(),
     package_data={'':['*.ico']},
     include_package_data=True,
-    version='1.1.0',
+    version='1.2.0',
     scripts=['mownfish/bin/mownfish'],
     py_modules=['mownfish'],
     )
