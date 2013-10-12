@@ -18,8 +18,12 @@
 
 from tornado.options import define, options
 import tornadoasyncmemcache
+from sqlalchemy import create_engine
+from sqlalchemy import text
 
 define("db_addr_list", type=list, default=['192.168.0.176:19803'])
+define("mysqldb_engine", type=str,
+        default='mysql://root:ktep@192.168.0.27:3306/KTEP')
 
 class MemcachedClient(object):
     def __new__(cls):
@@ -28,5 +32,18 @@ class MemcachedClient(object):
                 tornadoasyncmemcache.ClientPool(options.db_addr_list,
                                                 maxclients=100)
         return cls._instance
+
+class MySQLClient(object):
+    def __new__(cls):
+        if not hasattr(cls, '_instance'):
+            cls._instance = \
+                    create_engine(options.mysqldb_engine, echo=True)
+        return cls._instance
+
 def get_memcached(key, callback):
-    MemcachedClient.instance().get(key, callback=callback)
+    MemcachedClient.get(key, callback=callback)
+
+def get_mysql(param):
+    sql="select * from table_name where param=:param";
+    result = MySQLClient().execute(text(sql), {'param':param}).fetchall()
+    return result
