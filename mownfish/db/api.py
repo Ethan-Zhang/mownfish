@@ -22,13 +22,11 @@ import tornadoasyncmemcache
 define("db_addr_list", type=list, default=['192.168.0.176:19803'])
 
 class MemcachedClient(object):
-    @staticmethod
-    def instance():
-        if not hasattr(MemcachedClient, "_instance"):
-            MemcachedClient._instance = \
-                tornadoasyncmemcache.ClientPool(options.db_addr_list, 
+    def __new__(cls):
+        if not hasattr(cls, '_instance'):
+            cls._instance = \
+                tornadoasyncmemcache.ClientPool(options.db_addr_list,
                                                 maxclients=100)
-        return MemcachedClient._instance
-
-def get(key, callback):
+        return cls._instance
+def get_memcached(key, callback):
     MemcachedClient.instance().get(key, callback=callback)
