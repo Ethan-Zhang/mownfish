@@ -75,7 +75,7 @@ def main():
     shutil.copy(os.path.join(src_path, 'setup.py'),
             os.path.join(dst_path, project_name))
 
-    for root, dirs, files in os.walk(dst_path):
+    for root, dirs, files in os.walk(os.path.join(dst_path, project_name)):
         for name in files:
             if name.find('mownfish') != -1:
                 old_name = name
