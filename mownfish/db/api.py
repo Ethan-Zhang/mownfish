@@ -23,7 +23,7 @@ from sqlalchemy import create_engine
 from sqlalchemy import text
 
 define("db_addr_list", type=list, default=['192.168.0.176:19803'])
-define("redis_ip", type=str, default=['192.168.1.96'])
+define("redis_ip", type=str, default='192.168.1.96')
 define("redis_port", type=int, default=19821)
 define("mysqldb_engine", type=str,
         default='mysql://root:ktep@192.168.0.27:3306/KTEP')
