@@ -28,18 +28,22 @@ LOG = logging.getLogger()
 def _setup_logging_from_conf(name):
     if not options.log_path or not name:
         return
-
-    _logger = logging.getLogger()
+    
+    if name == 'Main':
+        _logger = logging.getLogger()
+    else:
+        _logger = logging.getLogger(name)
 
     if options.log_level == 'none':
         return
     _logger.setLevel(getattr(logging, options.log_level))
     
     formatter = logging.Formatter('%(asctime)s    %(levelname)s    %(module)s.%(funcName)s:%(lineno)d    %(message)s', '')
-    _log_file = '%s/%s.Main.log' % (options.log_path, name)
+    _log_file = '%s/mownfish.%s.log' % (options.log_path, name)
     timelog = logging.handlers.TimedRotatingFileHandler(_log_file,
             'midnight', 1, 0)
-    timelog.setFormatter(formatter)
+    if name == 'Main':
+        timelog.setFormatter(formatter)
     _logger.addHandler(timelog)
 
 def setup(name):

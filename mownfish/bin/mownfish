@@ -35,7 +35,7 @@ from mownfish import wsgi
 
 if __name__ == '__main__':
     mownfish.util.config.init_options()
-    logging.setup('mownfish')
+    logging.setup('Main')
 
     server = wsgi.Server()
     server.start()
