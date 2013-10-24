@@ -109,11 +109,11 @@ class Server(object):
 
             LOG.info('STOP TORNADO WEB SERVER ...')
         except socket.error as e:
-            LOG.warning('Socket Error: %s', str(e))
+            LOG.warning('Socket Error: %s' % str(e))
         except KeyboardInterrupt as e:
             LOG.warning('Gently Quit')
         except Exception as e:
-            LOG.error('UnCaught Exception: %s', e)
+            LOG.error('UnCaught Exception: %s' % e, exc_info=True)
 
 
 
