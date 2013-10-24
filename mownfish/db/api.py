@@ -53,13 +53,13 @@ class MySQLClient(object):
         return cls._instance
 
 def get_memcached(key, callback):
-    MemcachedClient.get(key, callback=callback)
+    MemcachedClient().get(key, callback=callback)
 
 def get_redis(key):
-    RedisClient.get(key)
+    RedisClient().get(key)
 
 def set_redis(key, value):
-    RedisClient.set(key, value)
+    RedisClient().set(key, value)
 
 def get_mysql(param):
     sql="select * from table_name where param=:param";
