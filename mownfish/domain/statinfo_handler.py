@@ -48,10 +48,10 @@ class StatInfoHandler(BaseHandler):
                                         (up_day, up_hour, up_minute, up_second)
             self.finish(result)
 
-        except BaseError, e:
+        except BaseError as e:
             LOG.error(e, exc_info=True)
             self.finish({'code':e.e_code, 'msg': '%s' % e})
-        except Exception, e:
+        except Exception as e:
             LOG.error(e, exc_info=True)
             self.finish({'code':ECODE.DEFAULT, 'msg':
                 'Unknown'})
