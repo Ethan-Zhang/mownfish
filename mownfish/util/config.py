@@ -53,7 +53,7 @@ define("bind_ip", default = '0.0.0.0',
 define("port", type = int, 
         help = 'Run server on a specific port')
 
-define("env", default="dev", help="service run environment")
+define("env", default="debug", help="service run environment")
     
 def _usage():
     print 'Usage: bin/mownfish -log_root_path=SpecifiedFile -port=SpecifiedPort'
