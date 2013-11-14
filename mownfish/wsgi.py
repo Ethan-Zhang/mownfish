@@ -67,7 +67,9 @@ class Server(object):
         def kill_server(sig, frame):
 
             LOG.warning( 'Catch SIG: %d' % sig )
-            
+
+            tt.stop()
+
             tornado.ioloop.IOLoop.instance().stop()
 
 
@@ -105,7 +107,7 @@ class Server(object):
             tornado.ioloop.IOLoop.instance().start()
 
             http_server.stop()
-            tornado.ioloop.IOLoop.instance().close()
+            tornado.ioloop.IOLoop.instance().stop()
 
             LOG.info('STOP TORNADO WEB SERVER ...')
         except socket.error as e:
