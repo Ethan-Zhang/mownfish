@@ -7,7 +7,11 @@ setup(
     packages=find_packages(),
     package_data={'':['*.ico']},
     include_package_data=True,
-    version='1.4.6',
-    scripts=['mownfish/bin/mownfish'],
+    version='2.0.0',
+    entry_points = {
+        'console_scripts': [
+            'mownfishd = mownfish.cmd.mownfishd:main',
+            ],
+        },
     py_modules=['mownfish'],
     )

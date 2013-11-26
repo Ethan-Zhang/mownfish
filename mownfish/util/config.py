@@ -60,31 +60,22 @@ def _usage():
     sys.exit()
     pass
 
-def _check_dir_tail(dir_name):
-    if not dir_name or '' == dir_name:
-        return dir_name
-    _len = len(dir_name) - 1
-    if '/' == dir_name[_len:]:
-        dir_name = dir_name[0:_len]
-
-    return dir_name
-    pass
-
-def _mkdir(file_dir):
-    real_path = os.path.realpath(file_dir)
-    if not os.path.exists(real_path):
-        os.makedirs(real_path)
-        pass
-    pass
-
 def init_options():
     # maybe some options will be use before load config file
     options.parse_command_line()
+    options.cfg_file = os.path.abspath(options.cfg_file)
     options.parse_config_file(options.cfg_file)
     if not options.log_root_path or not options.port:
         options.print_help()
         _usage()
-    options.log_root_path = _check_dir_tail(options.log_root_path)
-    options.log_path = '%s/%d' % (options.log_root_path, options.port)
-    _mkdir(options.log_path)
+    
+    options.log_root_path = os.path.abspath(options.log_root_path)
+
+    options.log_path = os.path.normpath(
+                    os.path.join(
+                        options.log_root_path,
+                        str(options.port)))
+
+    if not os.path.exists(options.log_path):
+        os.makedirs(options.log_path)
 

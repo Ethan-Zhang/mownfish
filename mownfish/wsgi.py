@@ -30,11 +30,10 @@ from tornado.options import define, options
 
 from mownfish.util.log import LOG
 import mownfish.domain
-import timer_task
 
 class TApplication(tornado.web.Application):
 
-    def __init__(self):
+    def __init__(self, application_name):
         debug = options.env == "debug"
         app_settings = { 
                 'gzip': 'on',
@@ -43,13 +42,11 @@ class TApplication(tornado.web.Application):
                 'debug':debug,
                 }
 
-        handlers = [
-            (r'/statinfo', mownfish.domain.StatInfoHandler),
-        ]
-
         self._start_time = time.time()
 
-        tornado.web.Application.__init__(self, handlers, **app_settings)
+        tornado.web.Application.__init__(self, 
+                                    mownfish.domain.ROUTES[application_name],
+                                    **app_settings)
 
     def stat_info(self):
         handlers = len(tornado.ioloop.IOLoop.instance()._handlers)
@@ -59,8 +56,10 @@ class TApplication(tornado.web.Application):
 
 class Server(object):
 
-    def __init__(self):
-        pass
+    def __init__(self, application, prepare, log_list):
+        self.application = application
+        self.prepare = prepare
+        self.log_list = log_list
 
     def start(self):
 
@@ -68,26 +67,27 @@ class Server(object):
 
             LOG.warning( 'Catch SIG: %d' % sig )
 
-            tt.stop()
-
             tornado.ioloop.IOLoop.instance().stop()
 
 
-        # 忽略Broken Pipe信号
+        # ignore Broken Pipe signal
         signal.signal(signal.SIGPIPE, signal.SIG_IGN);
                             
-        # 处理kill信号
+        # catch kill signal
         signal.signal(signal.SIGINT, kill_server)
         signal.signal(signal.SIGQUIT, kill_server)
         signal.signal(signal.SIGTERM, kill_server)
         signal.signal(signal.SIGHUP, kill_server)
+
+        for log_name in self.log_list:
+            mownfish.util.log.setup(log_name)
 
         LOG.info('START TORNADO WEB SERVER ...')
 
         for key, value in options.items():
             if key not in ('help', 'log_file_prefix', 'log_to_stderr') \
                     and value.value() is None:
-                print('must specify %s' % key)
+                sys.stderr.write('must specify %s' % key)
                 options.print_help()
                 sys.exit(0)
             LOG.info('Options: (%s, %s)', key, value.value())
@@ -98,11 +98,11 @@ class Server(object):
                     backlog=128)
 
             http_server =  \
-                tornado.httpserver.HTTPServer(xheaders=True, request_callback=TApplication())
+                tornado.httpserver.HTTPServer(xheaders=True,
+                                            request_callback=self.application)
             http_server.add_sockets(sockets)
 
-            tt = timer_task.TimerTask()
-            tt.start()
+            self.prepare()
 
             tornado.ioloop.IOLoop.instance().start()
 

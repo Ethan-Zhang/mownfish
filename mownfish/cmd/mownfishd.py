@@ -32,10 +32,18 @@ if os.path.exists(os.path.join(possible_topdir, 'mownfish', '__init__.py')):
 import mownfish.util.config
 from mownfish.util import log as logging
 from mownfish import wsgi
+import mownfish.timer_task
+
+def prepare():
+    task = mownfish.timer_task.TimerTask()
+    task.start()
+
+def main():
+    mownfish.util.config.init_options()
+    log_list = ('Main',)
+
+    server = wsgi.Server(wsgi.TApplication('mownfish'), prepare, log_list)
+    server.start()
 
 if __name__ == '__main__':
-    mownfish.util.config.init_options()
-    logging.setup('Main')
-
-    server = wsgi.Server()
-    server.start()
+    main()

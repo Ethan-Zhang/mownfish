@@ -16,4 +16,10 @@
 # under the License.
 
 
-from statinfo_handler import StatInfoHandler
+import statinfo_handler
+
+ROUTES = { 'mownfish':
+                    [(r'/statinfo', statinfo_handler.StatInfoHandler),
+                     ],
+
+        }
