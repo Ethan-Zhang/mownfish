@@ -22,11 +22,11 @@ feature
 
 Installation
 ------------
-**Install from pypi**::
+**Install from pypi:**
 
     pip install mownfish
 
-**Install from source**::
+**Install from source:**
 
     git clone https://github.com/Ethan-Zhang/mownfish.git
     cd mownfish
@@ -36,8 +36,18 @@ Init your code
 ------------
     mownfish/script/fishing $dst_path -n $project_name -l $lisense_file
 
-Usage
+Example
 ------------
+
+**code**
+
+1. add your handler in project/domain/
+2. modify the routes project/domain/__init__.py ROUTES
+3. the prepareration include periodcallback timer before HTTPServer start 
+   writes in project/cmd/project-bin prepare() method
+
+**run**
+
     python $project_name/cmd/$project_name --port
 
 Requirements
