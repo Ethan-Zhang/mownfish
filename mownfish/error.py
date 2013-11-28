@@ -57,7 +57,7 @@ class ParameterError(BaseError):
         return self.e_msg 
     pass
 
-class ParameterEmptyError(BaseError):
+class ParameterEmptyError(ParameterError):
     def __init__(self, parameter_name=''):
         self.e_code = ErrorCode.PARAMETERS
         self.e_msg = 'Parameter[%s] Can\'t Be NULL' % parameter_name.upper()
@@ -67,7 +67,7 @@ class ParameterEmptyError(BaseError):
         return self.e_msg 
     pass
 
-class ParameterTypeError(BaseError):
+class ParameterTypeError(ParameterError):
     def __init__(self, parameter_name=''):
         self.e_code = ErrorCode.PARAMETERS
         self.e_msg = 'Parameter[%s]\'type Is Invalid' % parameter_name.upper()
