@@ -84,7 +84,7 @@ class Server(object):
 
         LOG.info('START TORNADO WEB SERVER ...')
 
-        for key, value in options.items():
+        for key, value in sorted(options.items(), key=lambda d:d[0]):
             if key not in ('help', 'log_file_prefix', 'log_to_stderr') \
                     and value.value() is None:
                 sys.stderr.write('must specify %s' % key)
