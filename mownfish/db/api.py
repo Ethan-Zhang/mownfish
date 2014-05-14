@@ -15,6 +15,8 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
+'''
+DB code sample
 
 from tornado.options import define, options
 import tornadoasyncmemcache
@@ -65,3 +67,4 @@ def get_mysql(param):
     sql="select * from table_name where param=:param";
     result = MySQLClient().execute(text(sql), {'param':param}).fetchall()
     return result
+'''
