@@ -87,7 +87,7 @@ class Server(object):
         for key, value in sorted(options.items(), key=lambda d:d[0]):
             if key not in ('help', 'log_file_prefix', 'log_to_stderr') \
                     and value.value() is None:
-                sys.stderr.write('must specify %s' % key)
+                sys.stderr.write('must specify %s\n' % key)
                 options.print_help()
                 sys.exit(0)
             LOG.info('Options: (%s, %s)', key, value.value())
