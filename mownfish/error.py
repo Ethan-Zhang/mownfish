@@ -21,18 +21,17 @@
 class ErrorCode(object):
     DEFAULT = 0xff
     SUCCESS = 0x00
-    # 参数
+
     PARAMETERS = 100 
     PARAMETERS_EMPTY = 101 
     PARAMETERS_TYPE = 102 
-    PARAMETERS_DATE = 103 
-    PARAMETERS_HOTELIDS = 104
-    # 网络IO
+    PARAMETERS_DATA = 103 
+
     TCP = 500 
     HTTP = 501 
-    # 业务逻辑
-    DB_ERROR = 301 
-    DB_EMPTY = 302 
+
+    DB_ERROR = 300 
+    DB_EMPTY = 301 
 
 class ErrorMessage(object):
     SUCCESS = 'SUCCESS'
@@ -77,9 +76,9 @@ class ParameterTypeError(ParameterError):
         return self.e_msg 
     pass
 
-class ParameterDateError(ParameterError):
+class ParameterDataError(ParameterError):
     def __init__(self, msg=''):
-        self.e_code = ErrorCode.PARAMETERS_DATE 
+        self.e_code = ErrorCode.PARAMETERS_DATA 
         self.e_msg = 'Invalid Date: %s' % msg
         pass
 
@@ -106,3 +105,27 @@ class DBEmpty(DBError):
     def __str__(self):
         return self.e_msg 
     pass
+
+class NetworkError(BaseError):
+    def __init__(self, msg=''):
+        self.e_code = 500
+        self.e_msg = 'Network IO Error: %s' % msg
+
+    def __str__(self):
+        return self.e_msg
+
+class HttpError(NetworkError):
+    def __init__(self, msg=''):
+        self.e_code = 502
+        self.e_msg = 'Client Http Error: %s' % msg
+
+    def __str__(self):
+        return self.e_msg
+
+class ServiceError(NetworkError):
+    def __init__(self, msg=''):
+        self.e_code = 503
+        self.e_msg = 'Client Service Error: %s' % msg
+
+    def __str__(self):
+        return self.e_msg
