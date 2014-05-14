@@ -31,6 +31,9 @@ class BaseHandler(RequestHandler):
 
     HTTP_SERVER_NAME = 'ZWS/1.0'
 
+    def initialize(self):
+        self.request_start_time = int(self.request._start_time)
+
     def set_default_headers(self):
         self.set_header('Server', BaseHandler.HTTP_SERVER_NAME)
 

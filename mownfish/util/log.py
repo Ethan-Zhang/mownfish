@@ -38,7 +38,7 @@ def _setup_logging_from_conf(name):
         return
     _logger.setLevel(getattr(logging, options.log_level))
     
-    formatter = logging.Formatter('%(asctime)s    %(levelname)s    %(module)s.%(funcName)s:%(lineno)d    %(message)s', '')
+    formatter = logging.Formatter('%(asctime)s\t%(levelname)s\t%(module)s.%(funcName)s:%(lineno)d\t%(message)s', '')
     _log_file = '%s/mownfish.%s.log' % (options.log_path, name)
     timelog = logging.handlers.TimedRotatingFileHandler(_log_file,
             'midnight', 1, 0)
@@ -49,3 +49,22 @@ def _setup_logging_from_conf(name):
 def setup(name):
     _setup_logging_from_conf(name)
 
+class LogTimeIt(object):
+    
+    def __init__(self):
+        self._log_map = {}
+
+    def add_point(self, point_name):
+        self._log_map[point_name] = time.time()
+
+    def stop_point(self, point_name):
+        self._log_map[point_name] = time.time()-self._log_map[point_name]
+
+    def __str__(self):
+        msg = '\t'.join(['%s\t%.3f' % (point, time_period) 
+                    for point, time_period in self._log_map.items()])
+        return msg
+
+    def __len__(self):
+
+        return len(self._log_map)
