@@ -33,11 +33,8 @@ DEFAULT_OPTIONS_LOG_ROOT_PATH     = \
 define("log_level", default = 'DEBUG', 
         help = "Set Log Level")
 
-define('log_root_path', default = DEFAULT_OPTIONS_LOG_ROOT_PATH, 
+define('log_path', default = DEFAULT_OPTIONS_LOG_ROOT_PATH, 
         help = 'Log file stored root path')
-
-define('log_path',
-        help = 'Log file stored path')
 
 define('project_path', default =
         os.path.realpath(os.path.join(os.path.realpath(__file__),'..', '..', '..')),
@@ -56,25 +53,19 @@ define("port", type = int,
 define("env", default="debug", help="service run environment")
     
 def _usage():
-    print 'Usage: bin/mownfish -log_root_path=SpecifiedFile -port=SpecifiedPort'
+    print 'Usage: bin/mownfish -log_path=SpecifiedFile -port=SpecifiedPort'
     sys.exit()
-    pass
 
 def init_options():
     # maybe some options will be use before load config file
     options.parse_command_line()
     options.cfg_file = os.path.abspath(options.cfg_file)
     options.parse_config_file(options.cfg_file)
-    if not options.log_root_path or not options.port:
+    if not options.log_path or not options.port:
         options.print_help()
         _usage()
     
-    options.log_root_path = os.path.abspath(options.log_root_path)
-
-    options.log_path = os.path.normpath(
-                    os.path.join(
-                        options.log_root_path,
-                        str(options.port)))
+    options.log_path = os.path.abspath(options.log_path)
 
     if not os.path.exists(options.log_path):
         os.makedirs(options.log_path)
