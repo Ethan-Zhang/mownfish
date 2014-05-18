@@ -22,6 +22,7 @@ import logging
 import logging.handlers
 
 from tornado.options import define, options
+from mownfish.util.multiprocesslogging import MultiProcessTimedRotatingFileHandler
 
 LOG = logging.getLogger()
 
@@ -38,12 +39,16 @@ def _setup_logging_from_conf(name):
         return
     _logger.setLevel(getattr(logging, options.log_level))
     
-    formatter = logging.Formatter('%(asctime)s\t%(levelname)s\t%(module)s.%(funcName)s:%(lineno)d\t%(message)s', '')
+    formatter = logging.Formatter('%(asctime)s\t%(levelname)s\t%(process)d\t%(module)s.%(funcName)s:%(lineno)d\t%(message)s', '')
     _log_file = '%s/mownfish.%s.%s.log' % (options.log_path, 
                                             name,
                                             options.port)
-    timelog = logging.handlers.TimedRotatingFileHandler(_log_file,
-            'midnight', 1, 0)
+    if options.multiports:
+        timelog = logging.handlers.TimedRotatingFileHandler(_log_file,
+                'midnight', 1, 0)
+    else:
+        timelog = MultiProcessTimedRotatingFileHandler(_log_file, 'midnight',
+                                                    1, 0)
     if name == 'Main':
         timelog.setFormatter(formatter)
     _logger.addHandler(timelog)
