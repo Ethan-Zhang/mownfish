@@ -31,6 +31,9 @@ from tornado.options import define, options
 from mownfish.util.log import LOG
 import mownfish.domain
 
+define('multiports', default=True)
+define('num_process', default=1)
+
 class TApplication(tornado.web.Application):
 
     def __init__(self, application_name):
@@ -39,7 +42,7 @@ class TApplication(tornado.web.Application):
                 'gzip': 'on',
                 'static_path': os.path.join(os.path.dirname(__file__),
                             "static"),
-                'debug':debug,
+                'debug':debug if options.multiports else False,
                 }
 
         self._start_time = time.time()
@@ -97,6 +100,9 @@ class Server(object):
                     address=options.bind_ip,
                     backlog=128)
 
+            if not options.multiports:
+                task_id = tornado.process.fork_processes(options.num_process)
+            
             http_server =  \
                 tornado.httpserver.HTTPServer(xheaders=True,
                                             request_callback=self.application)
