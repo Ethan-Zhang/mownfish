@@ -31,7 +31,7 @@ if os.path.exists(os.path.join(possible_topdir, 'mownfish', '__init__.py')):
 
 import mownfish.util.config
 from mownfish.util import log as logging
-from mownfish import wsgi
+from mownfish import http_server
 import mownfish.timer_task
 
 def prepare():
@@ -42,7 +42,7 @@ def main():
     mownfish.util.config.init_options()
     log_list = ('Main',)
 
-    server = wsgi.Server(wsgi.TApplication('mownfish'), prepare, log_list)
+    server = http_server.Server(http_server.TApplication('mownfish'), prepare, log_list)
     server.start()
 
 if __name__ == '__main__':
