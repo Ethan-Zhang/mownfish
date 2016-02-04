@@ -18,6 +18,9 @@
 
 import time
 import os
+import fcntl
+import struct
+
 from logging.handlers import TimedRotatingFileHandler
 
 class MultiProcessTimedRotatingFileHandler(TimedRotatingFileHandler):
@@ -30,8 +33,8 @@ class MultiProcessTimedRotatingFileHandler(TimedRotatingFileHandler):
         then we have to get a list of matching filenames, sort them and remove
         the one with the oldest suffix.
         """
-        if self.stream:
-            self.stream.close()
+        #if self.stream:
+        #    self.stream.close()
         # get the time that this sequence started at and make it a TimeTuple
         t = self.rolloverAt - self.interval
         if self.utc:
@@ -41,8 +44,12 @@ class MultiProcessTimedRotatingFileHandler(TimedRotatingFileHandler):
         dfn = self.baseFilename + "." + time.strftime(self.suffix, timeTuple)
         #if os.path.exists(dfn):
         #    os.remove(dfn)
+        lockdata = struct.pack('hhllhh', fcntl.F_WRLCK, 0, 0, 0, 0, 0)
+        fcntl.fcntl(self.stream, fcntl.F_SETLKW, lockdata)
         if not os.path.exists(dfn) and os.path.exists(self.baseFilename):
             os.rename(self.baseFilename, dfn)
+            with open(self.baseFilename, 'a'):
+                pass
         if self.backupCount > 0:
             # find the oldest log file and delete it
             #s = glob.glob(self.baseFilename + ".20*")
@@ -52,6 +59,8 @@ class MultiProcessTimedRotatingFileHandler(TimedRotatingFileHandler):
             for s in self.getFilesToDelete():
                 os.remove(s)
         #print "%s -> %s" % (self.baseFilename, dfn)
+        if self.stream:
+            self.stream.close()
         self.mode = 'a'
         self.stream = self._open()
         currentTime = int(time.time())
