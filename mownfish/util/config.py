@@ -22,7 +22,7 @@
 import sys
 import os
 
-from tornado.options import define, options
+from tornado.options import define, options, Error
 
 CURRENT_PATH = os.path.dirname(os.path.realpath(__file__))
 PROJECT_PATH = os.path.realpath(os.path.join(CURRENT_PATH, '..', '..'))
@@ -58,7 +58,11 @@ def _usage():
 
 def init_options():
     # maybe some options will be use before load config file
-    options.parse_command_line()
+    try:
+        options.parse_command_line()
+    except Error as e:
+        print e
+        sys.exit()
     options.cfg_file = os.path.abspath(options.cfg_file)
     options.parse_config_file(options.cfg_file)
     if not options.log_path or not options.port:
