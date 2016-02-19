@@ -22,6 +22,7 @@ import os
 
 from tornado.web import RequestHandler
 from tornado.web import HTTPError
+from tornado.options import define, options
 
 from mownfish.util.log import LOG
 from mownfish.error import ParameterEmptyError
@@ -29,10 +30,8 @@ from mownfish.error import ParameterTypeError
 
 class BaseHandler(RequestHandler):
 
-    HTTP_SERVER_NAME = 'ZWS/1.0'
-
     def set_default_headers(self):
-        self.set_header('Server', BaseHandler.HTTP_SERVER_NAME)
+        self.set_header('Server', options.server_name)
 
     def on_connection_close(self):
         LOG.info('connection close.')

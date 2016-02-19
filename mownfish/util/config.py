@@ -50,6 +50,9 @@ define("bind_ip", default = '0.0.0.0',
 define("port", type = int, 
         help = 'Run server on a specific port')
 
+define("server_name", default = 'MOWNFISH/1.0',
+        help = 'set the http server name')
+
 define("env", default="debug", help="service run environment")
     
 def _usage():
