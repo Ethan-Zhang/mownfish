@@ -37,7 +37,11 @@ def _setup_logging_from_conf(name):
 
     if options.log_level == 'none':
         return
-    _logger.setLevel(getattr(logging, options.log_level))
+
+    if name == 'Access':
+        _logger.setLevel(logging.INFO)
+    else:
+        _logger.setLevel(getattr(logging, options.log_level))
     
     formatter = logging.Formatter('%(asctime)s\t%(levelname)s\t%(process)d\t%(module)s.%(funcName)s:%(lineno)d\t%(message)s', '')
     _log_file = '%s/mownfish.%s.%s.log' % (options.log_path, 

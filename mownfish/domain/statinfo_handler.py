@@ -47,6 +47,7 @@ class StatInfoHandler(BaseHandler):
             result['stat_info']['uptime']="%ddays, %dhours, %dminute, %.3fseconds" %\
                                         (up_day, up_hour, up_minute, up_second)
             self.finish(result)
+            self.set_accesslog_item('status', 'SUCCESS')
 
         except BaseError as e:
             LOG.error(e, exc_info=True)
@@ -55,5 +56,8 @@ class StatInfoHandler(BaseHandler):
             LOG.error(e, exc_info=True)
             self.finish({'code':ECODE.DEFAULT, 'msg':
                 'Unknown'})
+
+        finally:
+            self.write_accesslog()
 
 

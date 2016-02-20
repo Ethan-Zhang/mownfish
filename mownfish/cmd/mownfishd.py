@@ -40,7 +40,7 @@ def prepare():
 
 def main():
     mownfish.util.config.init_options()
-    log_list = ('Main',)
+    log_list = ('Main','Access')
 
     server = http_server.Server(http_server.TApplication('mownfish'), prepare, log_list)
     server.start()
