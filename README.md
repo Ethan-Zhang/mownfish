@@ -13,12 +13,8 @@ feature
 
 * A productional code structure. Let you focus more on the application code
   not the framework it self.
-* Init script **fishing**. Init your code from mownfish with its own package name
-  and certain lisense, using one single cmd.
-* Tornado version base on version 2.4. I have tested the performance between
-  v2.4 and v3.x, and the version 2.4 have 30% enhance than version 3.1.
-* A log model. Because Tornado v2.4 do not have its own log model yet, so I
-  add a log model in mownfish.
+* Init your project with cmd `fishing`. Init your own project skeleton code which copied from mownfish, and replace everything with your project name. using one single cmd.
+* A customized log module. For the Tornado v2.4 have not made its own log module yet, and in production env we want a customized access log to analyze the data.
 
 Installation
 ------------
@@ -32,7 +28,7 @@ Installation
     cd mownfish
     python setup.py install
 
-Init your code    
+Init your own project skeleton
 ------------
     mownfish/script/fishing $dst_path -n $project_name -l $lisense_file
 
@@ -41,20 +37,21 @@ Example
 
 **code**
 
-1. add your handler in project/domain/
-2. modify the routes project/domain/__init__.py ROUTES
-3. the prepareration include periodcallback timer before HTTPServer start 
-   writes in project/cmd/project-bin prepare() method
+1. add handler file in __project__/domain/
+2. modify the project's router in  __project__/domain/\_\_init\_\_.py, add a route item.
+3. add the prepareration including periodicity task in __project__/cmd/__project__d file, modify the method `prepare()`
 
 **run**
 
-    python $project_name/cmd/$project_name --port
+    python $project_name/cmd/$project_name --port=$port_num
 
 Requirements
 ------------
 The following libraries are required
 
 * [tornado==2.4](http://github.com/facebook/tornado)
+
+*I have tested the performance between v2.4 and v3.x, and the version 2.4 have 30% enhance than version 3.1.*
 
 Issues
 ------
