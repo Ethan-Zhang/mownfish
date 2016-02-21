@@ -8,13 +8,13 @@ The name of mownfish is comming from a crop I have ever worked with. The
 crop had a fish mascot which face was very weird, so I named it mownfish and
 for my project name.
 
-feature
+Feature
 ==========
 
 * A productional code structure. Let you focus more on the application code
   not the framework it self.
 * Init your project with cmd `fishing`. Init your own project skeleton code which copied from mownfish, and replace everything with your project name. using one single cmd.
-* A customized log module. For the Tornado v2.4 have not made its own log module yet, and in production env we want a customized access log to analyze the data.
+* A customized log module. For the Tornado v2.4 have not made its own log module yet, and in production env we want a customized access log to analyze the data. See more details and examples from [wiki](https://github.com/Ethan-Zhang/mownfish/wiki/Log).
 
 Installation
 ------------
