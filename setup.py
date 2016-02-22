@@ -11,7 +11,7 @@ setup(
     packages=find_packages(),
     package_data={'':['*.ico']},
     include_package_data=True,
-    version='2.3.2',
+    version='2.4.1',
     entry_points = {
         'console_scripts': [
             'mownfishd = mownfish.cmd.mownfishd:main',
