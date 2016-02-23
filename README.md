@@ -53,6 +53,10 @@ The following libraries are required
 
 *I have tested the performance between v2.4 and v3.x, and the version 2.4 have 30% enhance than version 3.1.*
 
+Contributing
+-----
+All pull requests are welcome!
+
 Issues
 ------
 
