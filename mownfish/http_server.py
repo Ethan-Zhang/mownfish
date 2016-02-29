@@ -29,7 +29,7 @@ import tornado.httpserver
 from tornado.options import define, options
 
 from mownfish.util.log import LOG
-import mownfish.domain
+import mownfish.handlers
 
 define('multiports', default=True)
 define('num_process', default=1)
@@ -48,7 +48,7 @@ class TApplication(tornado.web.Application):
         self._start_time = time.time()
 
         tornado.web.Application.__init__(self, 
-                                    mownfish.domain.ROUTES[application_name],
+                                    mownfish.handlers.ROUTES[application_name],
                                     **app_settings)
 
     def stat_info(self):
