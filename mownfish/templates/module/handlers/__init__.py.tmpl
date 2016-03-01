@@ -1,0 +1,12 @@
+# -*- coding: utf-8 -*-
+#
+# This package will contain the handlers of your Tornado project
+
+
+import statinfo_handler
+
+ROUTES = { '$project_name':
+                    [(r'/statinfo', statinfo_handler.StatInfoHandler),
+                     ],
+
+        }

@@ -28,22 +28,20 @@ Installation
     cd mownfish
     python setup.py install
 
-Init your own project skeleton
+Init and Run your own project skeleton
 ------------
-    mownfish/script/fishing $dst_path -n $project_name -l $lisense_file
+    fishing $project_name
+    cd $project_name
+    python $project_name/cmd/mownfishd --port=$port_num
 
 Example
 ------------
 
 **code**
 
-1. add handler file in __project__/domain/
-2. modify the project's router in  __project__/domain/\_\_init\_\_.py, add a route item.
-3. add the prepareration including periodicity task in __project__/cmd/__project__d file, modify the method `prepare()`
-
-**run**
-
-    python $project_name/cmd/$project_name --port=$port_num
+1. add handler file in __project__/handlers/
+2. modify the project's router in  __project__/handlers/\_\_init\_\_.py, add a route item.
+3. add the prepareration including periodicity task in __project__/cmd/mownfishd file, modify the method `prepare()`
 
 Requirements
 ------------

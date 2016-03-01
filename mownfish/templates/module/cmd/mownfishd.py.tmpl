@@ -1,0 +1,35 @@
+# -*- coding: utf-8 -*-
+#
+
+
+import os
+import sys
+
+# If ../__init__.py exists, add ../ to Python search path, so that
+# it will override what happens to be installed in /usr/(local/)lib/python...
+possible_topdir = os.path.normpath(os.path.join(os.path.abspath(sys.argv[0]),
+                                   os.pardir,
+                                    os.pardir,
+                                    os.pardir))
+if os.path.exists(os.path.join(possible_topdir, '$project_name', '__init__.py')):
+        sys.path.insert(0, possible_topdir)
+
+
+import $project_name.util.config
+from $project_name.util import log as logging
+from $project_name import http_server
+import $project_name.timer_task
+
+def prepare():
+    task = $project_name.timer_task.TimerTask()
+    task.start()
+
+def main():
+    $project_name.util.config.init_options()
+    log_list = ('Main','Access')
+
+    server = http_server.Server(http_server.TApplication('$project_name'), prepare, log_list)
+    server.start()
+
+if __name__ == '__main__':
+    main()

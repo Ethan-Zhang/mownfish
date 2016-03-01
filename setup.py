@@ -9,12 +9,11 @@ setup(
     download_url = 'https://github.com/Ethan-Zhang/mownfish/tree/v2.4',
     keywords = ['tornado'],
     packages=find_packages(),
-    package_data={'':['*.ico']},
     include_package_data=True,
-    version='2.5.0',
+    version='3.0.0',
     entry_points = {
         'console_scripts': [
-            'mownfishd = mownfish.cmd.mownfishd:main',
+            'fishing = mownfish.cmd.fishing:main',
             ],
         },
     py_modules=['mownfish'],
