@@ -87,13 +87,18 @@ class Server(object):
 
         LOG.info('START TORNADO WEB SERVER ...')
 
+        version_new = True
+        if [int(v_bit) for v_bit in tornado.version.split('.')] <= [2,4,1]:
+            version_new = False
+
         for key, value in sorted(options.items(), key=lambda d:d[0]):
+            value = value if version_new else value.value()
             if key not in ('help', 'log_file_prefix', 'log_to_stderr') \
-                    and value.value() is None:
+                    and value is None:
                 sys.stderr.write('must specify %s\n' % key)
                 options.print_help()
                 sys.exit(0)
-            LOG.info('Options: (%s, %s)', key, value.value())
+            LOG.info('Options: (%s, %s)', key, value)
 
         try:
             sockets = tornado.netutil.bind_sockets(options.port,
