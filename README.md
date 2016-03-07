@@ -47,9 +47,9 @@ Requirements
 ------------
 The following libraries are required
 
-* [tornado==2.4](http://github.com/facebook/tornado)
+* [tornado](http://github.com/facebook/tornado)
 
-*I have tested the performance between v2.4 and v3.x, and the version 2.4 have 30% enhance than version 3.1.*
+*Compatibale with all versions of tornado, include 2.x, 3.x, 4.x. I have tested the performance between v2.4 and v3.x, and the version 2.4 have 30% enhance than version 3.1.*
 
 Contributing
 -----
