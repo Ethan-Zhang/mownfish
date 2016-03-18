@@ -94,7 +94,7 @@ class Server(object):
         for key, value in sorted(options.items(), key=lambda d:d[0]):
             value = value if version_new else value.value()
             if key not in ('help', 'log_file_prefix', 'log_to_stderr') \
-                    and value is None:
+                    and not value:
                 sys.stderr.write('must specify %s\n' % key)
                 options.print_help()
                 sys.exit(0)

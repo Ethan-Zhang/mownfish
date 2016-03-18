@@ -10,7 +10,7 @@ setup(
     keywords = ['tornado'],
     packages=find_packages(),
     include_package_data=True,
-    version='3.1.1',
+    version='3.1.2',
     entry_points = {
         'console_scripts': [
             'fishing = mownfish.cmd.fishing:main',
