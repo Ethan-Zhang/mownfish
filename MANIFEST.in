@@ -1,1 +1,2 @@
 recursive-include mownfish/templates *
+include mownfish/static/favicon.ico
