@@ -73,7 +73,7 @@ class Server(object):
 
 
         # ignore Broken Pipe signal
-        signal.signal(signal.SIGPIPE, signal.SIG_IGN);
+        signal.signal(signal.SIGPIPE, signal.SIG_IGN)
                             
         # catch kill signal
         signal.signal(signal.SIGINT, kill_server)
