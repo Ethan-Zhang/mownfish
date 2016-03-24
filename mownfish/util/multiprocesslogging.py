@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-# Copyright 2012 Ethan Zhang<http://github.com/Ethan-Zhang> 
+# Copyright 2012 Ethan Zhang<http://github.com/Ethan-Zhang>
 #
 # Licensed under the Apache License, Version 2.0 (the "License"); you may
 # not use this file except in compliance with the License. You may obtain
@@ -23,10 +23,11 @@ import struct
 
 from logging.handlers import TimedRotatingFileHandler
 
+
 class MultiProcessTimedRotatingFileHandler(TimedRotatingFileHandler):
 
     def doRollover(self):
-        """ 
+        """
         do a rollover; in this case, a date/time stamp is appended to the filename
         when the rollover happens.  However, you want the file to be named for the
         start of the interval, not the current time.  If there is a backup count,

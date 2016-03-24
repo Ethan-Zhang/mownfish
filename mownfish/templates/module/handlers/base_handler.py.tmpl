@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-# Copyright 2012 Ethan Zhang<http://github.com/Ethan-Zhang> 
+# Copyright 2012 Ethan Zhang<http://github.com/Ethan-Zhang>
 #
 # Licensed under the Apache License, Version 2.0 (the "License"); you may
 # not use this file except in compliance with the License. You may obtain
@@ -15,7 +15,7 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
-'''BaseRequestHandler 
+'''BaseRequestHandler
 '''
 
 import os
@@ -30,6 +30,7 @@ from $project_name.error import ParameterEmptyError
 from $project_name.error import ParameterTypeError
 from $project_name.util import commonutils
 
+
 class BaseHandler(RequestHandler):
 
     def __init__(self, *args, **kwargv):
@@ -42,7 +43,8 @@ class BaseHandler(RequestHandler):
         self.set_header('Server', options.server_name)
 
     def prepare(self):
-        self._default_log_item['start_time'] = commonutils.format_timestamp(self.request._start_time)
+        self._default_log_item['start_time'] = commonutils.format_timestamp(
+            self.request._start_time)
         self._default_log_item['version'] = 'V1'
         self._default_log_item['ip'] = self.request.remote_ip
         self._default_log_item['url'] = self.request.uri
@@ -56,7 +58,7 @@ class BaseHandler(RequestHandler):
         self.set_accesslog_item('request_time', self.request.request_time())
 
     def add_accesslog_item(self, item='', style='s'):
-        self._log_item.append((item,style))
+        self._log_item.append((item, style))
 
     def set_accesslog_item(self, item_name, item):
         if item_name in self._default_log_item:
@@ -65,17 +67,19 @@ class BaseHandler(RequestHandler):
     def write_accesslog(self):
         default_log = '%s`%s`%s`%s`%s`%.3f' % \
                         (self._default_log_item['start_time'],
-                        self._default_log_item['version'],
-                        self._default_log_item['ip'],
-                        self._default_log_item['url'],
-                        self._default_log_item['status'],
-                        self._default_log_item['request_time'],)
-        access_item_s = '`'.join(['%%%s' % item[1] for item in self._log_item]) % \
-                    tuple([item[0] for item in self._log_item])
-        self._logger.info('%s`%s' % (default_log,access_item_s))
-       
+                         self._default_log_item['version'],
+                         self._default_log_item['ip'],
+                         self._default_log_item['url'],
+                         self._default_log_item['status'],
+                         self._default_log_item['request_time'],)
+        access_item_s = '`'.join(['%%%s' % item[1]
+                                 for item in self._log_item]) % tuple(
+                                     [item[0] for item in self._log_item])
+        self._logger.info('%s`%s' % (default_log, access_item_s))
+
     def _check_argument(self, parameter_name,
-            default_value=None, expect_types=()):
+                        default_value=None,
+                        expect_types=()):
         try:
             if not default_value:
                 v = self.get_argument(parameter_name)
@@ -84,6 +88,6 @@ class BaseHandler(RequestHandler):
         except HTTPError as e:
             raise ParameterEmptyError(parameter_name)
 
-        if expect_types and not isinstance(v, expect_types): 
+        if expect_types and not isinstance(v, expect_types):
             raise ParameterTypeError(parameter_name)
         return v

@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-# Copyright 2012 Ethan Zhang<http://github.com/Ethan-Zhang> 
+# Copyright 2012 Ethan Zhang<http://github.com/Ethan-Zhang>
 #
 # Licensed under the Apache License, Version 2.0 (the "License"); you may
 # not use this file except in compliance with the License. You may obtain
@@ -34,28 +34,30 @@ import mownfish.handlers
 define('multiports', default=True)
 define('num_process', default=1)
 
+
 class TApplication(tornado.web.Application):
 
     def __init__(self, application_name):
         debug = options.env == "debug"
-        app_settings = { 
+        app_settings = {
                 'gzip': 'on',
                 'static_path': os.path.join(os.path.dirname(__file__),
-                            "static"),
-                'debug':debug if options.multiports else False,
+                                            "static"),
+                'debug': debug if options.multiports else False,
                 }
 
         self._start_time = time.time()
 
-        tornado.web.Application.__init__(self, 
-                                    mownfish.handlers.ROUTES[application_name],
-                                    **app_settings)
+        tornado.web.Application.__init__(
+            self,
+            mownfish.handlers.ROUTES[application_name],
+            **app_settings)
 
     def stat_info(self):
         handlers = len(tornado.ioloop.IOLoop.instance()._handlers)
-        return {'handlers': handlers, 
+        return {'handlers': handlers,
                 'uptime': (time.time() - self._start_time)}
-        
+
 
 class Server(object):
 
@@ -68,14 +70,13 @@ class Server(object):
 
         def kill_server(sig, frame):
 
-            LOG.warning( 'Catch SIG: %d' % sig )
+            LOG.warning('Catch SIG: %d' % sig)
 
             tornado.ioloop.IOLoop.instance().stop()
 
-
         # ignore Broken Pipe signal
         signal.signal(signal.SIGPIPE, signal.SIG_IGN)
-                            
+
         # catch kill signal
         signal.signal(signal.SIGINT, kill_server)
         signal.signal(signal.SIGQUIT, kill_server)
@@ -88,10 +89,10 @@ class Server(object):
         LOG.info('START TORNADO WEB SERVER ...')
 
         version_new = True
-        if [int(v_bit) for v_bit in tornado.version.split('.')] <= [2,4,1]:
+        if [int(v_bit) for v_bit in tornado.version.split('.')] <= [2, 4, 1]:
             version_new = False
 
-        for key, value in sorted(options.items(), key=lambda d:d[0]):
+        for key, value in sorted(options.items(), key=lambda d: d[0]):
             value = value if version_new else value.value()
             if key not in ('help', 'log_file_prefix', 'log_to_stderr') \
                     and not value:
@@ -102,15 +103,16 @@ class Server(object):
 
         try:
             sockets = tornado.netutil.bind_sockets(options.port,
-                    address=options.bind_ip,
-                    backlog=128)
+                                                   address=options.bind_ip,
+                                                   backlog=128)
 
             if not options.multiports:
                 task_id = tornado.process.fork_processes(options.num_process)
-            
+
             http_server =  \
-                tornado.httpserver.HTTPServer(xheaders=True,
-                                            request_callback=self.application)
+                tornado.httpserver.HTTPServer(
+                    xheaders=True,
+                    request_callback=self.application)
             http_server.add_sockets(sockets)
 
             self.prepare()
@@ -128,8 +130,5 @@ class Server(object):
         except Exception as e:
             LOG.error('UnCaught Exception: %s' % e, exc_info=True)
 
-
-
     def hup(self):
         pass
-

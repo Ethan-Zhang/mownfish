@@ -25,7 +25,7 @@ from tornado.httpclient import AsyncHTTPClient
 
 from mownfish.util.log import LOG
 
-from base_handler import BaseHandler 
+from base_handler import BaseHandler
 from mownfish.error import ErrorCode as ECODE
 from mownfish.error import ErrorMessage as EMSG
 from mownfish.error import BaseError
@@ -37,27 +37,26 @@ class StatInfoHandler(BaseHandler):
         try:
             result = {'code': ECODE.SUCCESS, 'msg': EMSG.SUCCESS}
             stat_info = self.application.stat_info()
-            result['stat_info']={}
-            result['stat_info']['handlers_n']=stat_info['handlers']
+            result['stat_info'] = {}
+            result['stat_info']['handlers_n'] = stat_info['handlers']
             uptime = stat_info['uptime']
             up_day = uptime // 86400
             up_hour = (uptime - up_day*86400) // 3600
             up_minute = (uptime - up_day*86400 - up_hour*3600) // 60
             up_second = uptime - up_day*86400 - up_hour*3600 - up_minute*60
-            result['stat_info']['uptime']="%ddays, %dhours, %dminute, %.3fseconds" %\
-                                        (up_day, up_hour, up_minute, up_second)
+            result['stat_info']['uptime'] = "%ddays, %dhours, %dminute, \
+                                             %.3fseconds" % (up_day, up_hour,
+                                                             up_minute,
+                                                             up_second)
             self.finish(result)
             self.set_accesslog_item('status', 'SUCCESS')
 
         except BaseError as e:
             LOG.error(e, exc_info=True)
-            self.finish({'code':e.e_code, 'msg': '%s' % e})
+            self.finish({'code': e.e_code, 'msg': '%s' % e})
         except Exception as e:
             LOG.error(e, exc_info=True)
-            self.finish({'code':ECODE.DEFAULT, 'msg':
-                'Unknown'})
+            self.finish({'code': ECODE.DEFAULT, 'msg': 'Unknown'})
 
         finally:
             self.write_accesslog()
-
-

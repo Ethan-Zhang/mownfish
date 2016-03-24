@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-# Copyright 2012 Ethan Zhang<http://github.com/Ethan-Zhang> 
+# Copyright 2012 Ethan Zhang<http://github.com/Ethan-Zhang>
 #
 # Licensed under the Apache License, Version 2.0 (the "License"); you may
 # not use this file except in compliance with the License. You may obtain
@@ -43,7 +43,7 @@ class RedisClient(object):
         if not hasattr(cls, '_instance'):
             cls._instance = \
                 redis.StrictRedis(host=options.redis_ip,
-                                    port=options.redis_port, 
+                                    port=options.redis_port,
                                     db=0)
         return cls._instance
 

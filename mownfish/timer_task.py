@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-# Copyright 2012 Ethan Zhang<http://github.com/Ethan-Zhang> 
+# Copyright 2012 Ethan Zhang<http://github.com/Ethan-Zhang>
 #
 # Licensed under the Apache License, Version 2.0 (the "License"); you may
 # not use this file except in compliance with the License. You may obtain
@@ -22,15 +22,17 @@ from tornado import ioloop
 
 from mownfish.util.log import LOG
 
+
 class TimerTask(object):
     def __init__(self):
         def _test_task():
             LOG.debug("PeriodicCallback")
-        self._timer_task = \
-                ioloop.PeriodicCallback(_test_task,20*1000)
+        self._timer_task = ioloop.PeriodicCallback(
+            _test_task,
+            20*1000)
+
     def start(self):
         self._timer_task.start()
 
     def stop(self):
         self._timer_task.stop()
-
