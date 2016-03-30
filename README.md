@@ -1,5 +1,9 @@
 mownfish
 ==========
+[![Build Status](https://travis-ci.org/Ethan-Zhang/mownfish.svg)](https://travis-ci.org/Ethan-Zhang/mownfish)
+
+Overview
+==========
 
 The mownfish is a productional skeleton for tornado. It helps us making our own
 application with tornado framework rapidly and normativity. Mownfish is
