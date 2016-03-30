@@ -4,5 +4,7 @@ python:
 
 install:
     - pip install tornado
+    - python setup.py install
 
-script: nosetests
+script:
+    - python tests/__init__.py 
