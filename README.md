@@ -40,9 +40,6 @@ Init and Run your own project skeleton
 
 Example
 ------------
-
-**code**
-
 1. add handler file in __project__/handlers/
 2. modify the project's router in  __project__/handlers/\_\_init\_\_.py, add a route item.
 3. add the prepareration including periodicity task in __project__/cmd/mownfishd file, modify the method `prepare()`
